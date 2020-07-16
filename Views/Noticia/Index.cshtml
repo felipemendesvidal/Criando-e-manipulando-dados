@@ -2,20 +2,35 @@
     @{
         ViewData["Title"] = "Noticias";
     }
-    <form action="@Url.Action("Cadastrar")" method="POST" enctype="multipart/form-data">
-        <label for="IdNoticia">IdNoticia</label>
-        <input type="text" name="IdNoticia" id="IdNoticia">
 
-        <label for="Titulo">Titulo</label>
-        <input type="text" name="Titulo" id="Titulo">
+    <div class="titulo_pagina">
+            <h1>cadastro de @ViewData["Title"]</h1>
+    </div>
 
-        <label for="Texto">Texto</label>
-        <input type="text" name="Texto" id="Texto">
+    <form class="cadastro" action="@Url.Action("Cadastrar")" method="POST" enctype="multipart/form-data">
+        <div class="campo">
+            <label for="IdNoticia">IdNoticia</label>
+            <input type="text" name="IdNoticia" id="IdNoticia">
+        </div>
+            
+        <div class="campo">
+            <label for="Titulo">Titulo</label>
+            <input type="text" name="Titulo" id="Titulo">
 
-        <label for="Imagem">Imagem</label>
-        <input type="file" name="Imagem" id="Imagem">
+        </div>
+                
+        <div class="campo">
+            <label for="Texto">Texto</label>
+            <input type="text" name="Texto" id="Texto">
 
-        <button type="submit">Cadastrar</button>
+        </div>
+                
+        <div class="campo">
+            <label for="Imagem">Imagem</label>
+            <input type="file" name="Imagem" id="Imagem">
+
+        </div>
+        <button class="gradient btn" type="submit">Cadastrar</button>
 
     </form>
 
@@ -35,7 +50,9 @@
                     <td>@item.Titulo</td>
                     <td>@item.Texto</td>
                     <td><img src="img/Noticias/@item.Imagem" alt="Imagem da noticia @item.Titulo" width="40"></td>
-                    <td><a asp-area="" asp-controller="Noticia" asp-action="Excluir" asp-route-id="@item.IdNoticia">Excluir</a></td>
+                    <td><a asp-area="" asp-controller="Noticia" asp-action="Excluir" asp-route-id="@item.IdNoticia">
+                        <i class="fa fa-trash"></i>
+                    </a></td>
                 </tr>
             }
         </tbody>
