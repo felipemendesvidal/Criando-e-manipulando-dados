@@ -64,6 +64,10 @@ namespace E_players_2.Models{
             return equipes;
         }//end void readall
 
+        /// <summary>
+        /// esse metodo faz alterações no csv rescrevendo ele
+        /// </summary>
+        /// <param name="e">apoio</param>
         public void Update(Equipe e){
             List<string> linhas = ReadAllLinesCSV(PATH);
             linhas.RemoveAll(x => x.Split(";")[0] == e.IdEquipe.ToString());
@@ -71,6 +75,10 @@ namespace E_players_2.Models{
             RewriteCSV(PATH, linhas);
         }//end void update
 
+        /// <summary>
+        /// esse metodo deleta um arquivo do csv
+        /// </summary>
+        /// <param name="id">indentificador</param>
         public void Delete(int id){
             List<string> linhas = ReadAllLinesCSV(PATH);
             linhas.RemoveAll(x => x.Split(";")[0] == id.ToString());
