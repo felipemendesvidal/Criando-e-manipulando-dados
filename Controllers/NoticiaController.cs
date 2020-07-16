@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,7 +33,26 @@ namespace E_players_2.Controllers{
             novaNoticia.IdNoticia = Int32.Parse(form["IdNoticia"]);
             novaNoticia.Titulo = form["Titulo"];
             novaNoticia.Texto = form["Texto"];
-            novaNoticia.Imagem = form["Imagem"];
+            
+            // Upload Início
+            var file    = form.Files[0];
+            var folder  = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/Noticias");
+
+            if(file != null){
+                if(!Directory.Exists(folder)){
+                    Directory.CreateDirectory(folder);
+                }//end is
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/", folder, file.FileName);
+                using (var stream = new FileStream(path, FileMode.Create)){  
+                    file.CopyTo(stream);  
+                }//end using
+                novaNoticia.Imagem   = file.FileName;
+            }//end if
+            else{
+                novaNoticia.Imagem   = "padrao.png";
+            }//end else
+            // Upload Final
 
             noticiaModel.Create(novaNoticia);
             ViewBag.Noticias = noticiaModel.ReadAll();
@@ -40,6 +60,13 @@ namespace E_players_2.Controllers{
 
 
         }//end iaction cadastrar
+
+        [Route("[controller]/{id}")]
+        public IActionResult Excluir(int id){
+            noticiaModel.Delete(id);
+            ViewBag.Noticias = noticiaModel.ReadAll();
+            return LocalRedirect("~/Noticia");
+        }//end iaction excluir
 
         
 

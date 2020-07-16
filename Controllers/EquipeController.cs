@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -31,16 +32,40 @@ namespace E_players_2.Controllers{
             Equipe novaEquipe = new Equipe();
             novaEquipe.IdEquipe = Int32.Parse(form["IdEquipe"]);
             novaEquipe.Nome = form["Nome"];
-            novaEquipe.Imagem = form["Imagem"];
+
+
+            // Upload Início
+            var file    = form.Files[0];
+            var folder  = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/Equipes");
+
+            if(file != null){
+                if(!Directory.Exists(folder)){
+                    Directory.CreateDirectory(folder);
+                }//end is
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/", folder, file.FileName);
+                using (var stream = new FileStream(path, FileMode.Create)){  
+                    file.CopyTo(stream);  
+                }//end using
+                novaEquipe.Imagem   = file.FileName;
+            }//end if
+            else{
+                novaEquipe.Imagem   = "padrao.png";
+            }//end else
+            // Upload Final
 
             equipeModel.Create(novaEquipe);
             ViewBag.Equipes = equipeModel.ReadAll();
 
             return LocalRedirect("~/Equipe");
-
-
         }//end iaction cadastrar
 
+        [Route("[controller]/{id}")]
+        public IActionResult Excluir(int id){
+            equipeModel.Delete(id);
+            ViewBag.Equipes = equipeModel.ReadAll();
+            return LocalRedirect("~/Equipe");
+        }//end iaction excluir
         
 
         
